@@ -2,6 +2,8 @@
 using TMPro;
 using UnityEngine.UI;
 using CodeBase.Services.Card;
+using System;
+using Zenject;
 
 namespace CodeBase.UI
 {
@@ -9,9 +11,9 @@ namespace CodeBase.UI
     {
         [SerializeField] private TextMeshProUGUI cardText;  // Текст для термина или определения
         [SerializeField] private Button flipButton;  // Кнопка для переворачивания карточки
-
+        [SerializeField] private Button deleteButton;  // Кнопка для удаления карточки из набора
         private CardModel _currentCard;  // Текущая карточка
-
+        public Action DeleteButtonClicked;
         // Инициализация карточки
         public void InitializeCard(CardModel card)
         {
@@ -23,6 +25,12 @@ namespace CodeBase.UI
         private void Start()
         {
             flipButton.onClick.AddListener(OnCardClicked);
+            deleteButton.onClick.AddListener(DeleteCard);
+        }
+
+        private void DeleteCard()
+        {
+            DeleteButtonClicked.Invoke();
         }
 
         // Обработчик нажатия на кнопку для переворота карточки
@@ -41,6 +49,16 @@ namespace CodeBase.UI
 
             // Если карточка перевернута, показываем определение, если нет - термин
             cardText.text = _currentCard.IsFlipped ? _currentCard.Definition : _currentCard.Term;
+        }
+
+        internal string GetCurrentTerm()
+        {
+            return _currentCard.Term;
+        }
+
+        internal CardModel GetCurrentCardModel()
+        {
+            return _currentCard;
         }
     }
 }

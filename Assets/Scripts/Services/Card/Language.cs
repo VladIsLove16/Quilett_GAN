@@ -1,6 +1,6 @@
 ﻿public enum Language
 {
-    English,
-    Russian
+    //English,
+    Deutch
 }
 

@@ -4,6 +4,7 @@ using TMPro;
 using CodeBase.Services.Card;
 using Zenject;
 using System;
+using System.Diagnostics.Contracts;
 
 namespace CodeBase.UI
 {
@@ -15,12 +16,15 @@ namespace CodeBase.UI
         [SerializeField] private Button startReviewButton;
         [SerializeField] private Button startTestingModeButton;
         [SerializeField] private Button startTypingModeButton;
-        [SerializeField] private Transform cardContainer;
+        [SerializeField] private Button sendTranslationRequestButton;
+        [SerializeField] private Translator _translator;
+        [SerializeField] private InputField translatedTextField;
+        //[SerializeField] private Transform cardContainer;
         [SerializeField] private CardView cardPrefab;
         [SerializeField] private GameObject reviewWindowParent;
         [SerializeField] private GameObject testWindowParent;  
         [SerializeField] private GameObject TypingModeWindowParent;  
-        [SerializeField] private TMP_Dropdown languageDropdown;
+        //[SerializeField] private TMP_Dropdown languageDropdown;
         private Language _language;
         [SerializeField] private Button openSettingsButton; // Кнопка для открытия настроек
         private SettingsWindow _settingsWindow;
@@ -45,10 +49,25 @@ namespace CodeBase.UI
             startReviewButton.onClick.AddListener(OnStartReviewClicked);
             startTestingModeButton.onClick.AddListener(OnStartTestClicked);  // �������� �� ���� �� ������ �����
             startTypingModeButton.onClick.AddListener(OnStartTypingModeClicked);
-            languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
+            //languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
             openSettingsButton.onClick.AddListener(OpenSettings);
+            sendTranslationRequestButton.onClick.AddListener(OnTranslationRequestClicked);
         }
 
+        private void OnTranslationRequestClicked()
+        {
+            string text = definitionInputField.text;
+            Debug.Log(text);
+            _translator.TranslateText(text, OnTranslationReceived);
+            translatedTextField.text = "loading";
+        }
+        private void OnTranslationReceived(string translatedText)
+        {
+            if (translatedText != null)
+                translatedTextField.text = translatedText;
+            else
+                translatedTextField.text = "error";
+        }
         private void OpenSettings()
         {
             Instantiate(_settingsWindow, reviewWindowParent.transform);
@@ -71,12 +90,18 @@ namespace CodeBase.UI
             string term = termInputField.text;
             string definition = definitionInputField.text;
 
-            if (!string.IsNullOrEmpty(term) && !string.IsNullOrEmpty(definition))
+            if (!string.IsNullOrEmpty(term) || !string.IsNullOrEmpty(definition))
             {
-                _cardManager.CreateCard(term, definition, _language);  // �������� ��������� ����
-                termInputField.text = "";
-                definitionInputField.text = "";
+                if (_cardManager.TryCreateCard(term, definition, _language))  // �������� ��������� ����
+                {
+                    termInputField.text = "";
+                    definitionInputField.text = "";
+                }
+                else
+                    Debug.Log("Cant create" + term);
             }
+            else
+                Debug.Log("null input");
         }
 
 
@@ -91,6 +116,7 @@ namespace CodeBase.UI
             var allCards = _cardManager.GetAllCards();
             var reviewWindowInstance = Instantiate(_reviewWindowPrefab, reviewWindowParent.transform);
             reviewWindowInstance.Initialize(allCards);
+            reviewWindowInstance.Construct(_cardManager);
             reviewWindowInstance.gameObject.SetActive(true);
         }
 
@@ -123,8 +149,10 @@ namespace CodeBase.UI
         {
             var allCards = _cardManager.GetAllCards();
             var testWindowInstance = Instantiate(_testWindowPrefab, testWindowParent.transform);
-            testWindowInstance.Initialize(allCards, _language);  // �������� ��������� ����
-            testWindowInstance.gameObject.SetActive(true);
+            if (testWindowInstance.Initialize(allCards, _language))   // �������� ��������� ����
+                testWindowInstance.gameObject.SetActive(true);
+            else
+            { Destroy(testWindowInstance.gameObject);Debug.Log("Initialize went wrong"); }
         }
     }
 }

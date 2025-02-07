@@ -1,6 +1,7 @@
 ﻿using CodeBase.Services.Card;
 using CodeBase.UI;
 using System.Collections.Generic;
+using TMPro;
 using Zenject;
 
 public class CardPresenter
@@ -18,7 +19,7 @@ public class CardPresenter
         _cards = new List<CardModel>();
     }
 
-    public void LoadCards(List<CardModel> cards, ProgressView progress)
+    public void LoadCards(List<CardModel> cards)
     {
         _cards = cards;
         _currentIndex = 0;
@@ -28,7 +29,7 @@ public class CardPresenter
         UpdateProgress();
     }
 
-    public void OnCardClicked(ProgressView progress)
+    public void OnCardClicked()
     {
         if (_cards.Count == 0) return;
 

@@ -7,20 +7,27 @@ namespace CodeBase.UI
     public class SettingsWindow : MonoBehaviour
     {
         [SerializeField] private Toggle musicToggle;
+        [SerializeField] private Slider musicSlider;
         [SerializeField] private Toggle vibrationToggle;
         [SerializeField] private Button closeButton;
+        private float musicValue;
         private bool _isVibrationEnabled = true;
         private bool _isMusicEnabled = true;
 
         private void Start()
         {
             musicToggle.onValueChanged.AddListener(ToggleMusic);
+            musicSlider.onValueChanged.AddListener(MusicValue);
             vibrationToggle.onValueChanged.AddListener(ToggleVibration);
             closeButton.onClick.AddListener(Close);
 
             LoadSettings();
         }
-
+        public void MusicValue(float amount)
+        {
+            musicValue = amount;
+            PlayerPrefs.SetFloat("MusicValue", amount);
+        }
         private void ToggleMusic(bool isOn)
         {
             _isMusicEnabled = isOn;
@@ -40,6 +47,7 @@ namespace CodeBase.UI
             _isMusicEnabled = PlayerPrefs.GetInt("MusicEnabled", 1) == 1;
             _isVibrationEnabled = PlayerPrefs.GetInt("VibrationEnabled", 1) == 1;
 
+            musicValue = PlayerPrefs.GetFloat("MusicValue", 0.7f);
             musicToggle.isOn = _isMusicEnabled;
             vibrationToggle.isOn = _isVibrationEnabled;
         }
@@ -48,7 +56,7 @@ namespace CodeBase.UI
         {
             gameObject.SetActive(false);
         }
-
+        public float Volume => musicValue;
         public bool IsVibrationEnabled() => _isVibrationEnabled;
     }
 

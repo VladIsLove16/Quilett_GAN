@@ -10,79 +10,137 @@ namespace CodeBase.UI
 {
     public class TestModeWindow : MonoBehaviour
     {
+        private const int NOTSELECTEDBUTTONINDEX = -1;
+        private const int MINCARDSCOUNT = 4;
         [SerializeField] private TextMeshProUGUI questionText;
         [SerializeField] private Button[] answerButtons;
         [SerializeField] private TextMeshProUGUI[] answerTexts;
         [SerializeField] private Button closeButton;
+        [SerializeField] private Button confirmButton;
+        Color confrimButtonColorDisabled = new Color(15, 80, 156, 0.25f);
+        Color confrimButtonColorActive = new Color(15, 80, 156, 1);
+        [SerializeField] private IncorrectPopup _incorrectPopup;
+        [SerializeField] CookieAnimator animator;
         //[Inject]private CardPresenter _cardPresenter;
-        [SerializeField] private ProgressView progress;
+        [SerializeField] private TextMeshProUGUI progress;
+        [SerializeField] private Image progressBar;
+        [SerializeField] private TextMeshProUGUI TestResultText;
 
         private List<CardModel> _cards;
         private CardModel _currentCard;
         private int _currentIndex = 0;
         private VibrationService _vibrationService;
-
-        public void Initialize(List<CardModel> cards, Language selectedLanguage)
+        private int selectedButtonIndex;
+        private int correctAnswers;
+        [SerializeField] private Color unselectedColor = Color.white;
+        [SerializeField] private Color selectedColor = new Color();
+        public bool Initialize(List<CardModel> cards, Language selectedLanguage)
         {
-            _cards = cards.Where(card => card.Language == selectedLanguage).ToList();
+            if (cards.Count < MINCARDSCOUNT)
+            {
+                Debug.LogWarning("Cant Initilize. Enter More cards");
+                return false;
+            }
+            //_cards = cards.Where(card => card.Language == selectedLanguage).ToList();
+            _cards = cards.ToList();
             _currentIndex = 0;
+            selectedButtonIndex = NOTSELECTEDBUTTONINDEX;
+            correctAnswers = 0;
             ShowNextQuestion();
+            return true;
         }
 
         private void Start()
         {
             closeButton.onClick.AddListener(Close);
+            confirmButton.onClick.AddListener(ConfirmSelection);
             foreach (var button in answerButtons)
             {
                 button.onClick.AddListener(() => OnAnswerSelected(button));
             }
             bool isVibrationEnabled = PlayerPrefs.GetInt("VibrationEnabled", 1) == 1;
             _vibrationService = new VibrationService(isVibrationEnabled);
+            _incorrectPopup.onPopupClosed += ShowNextQuestion;
         }
-
+        private void OnDestroy()
+        {
+            _incorrectPopup.onPopupClosed -= ShowNextQuestion;
+        }
         private void ShowNextQuestion()
         {
             if (_currentIndex >= _cards.Count)
             {
-                Close();
+                FinishTest();
                 return;
             }
 
             _currentCard = _cards[_currentIndex];
-            questionText.text = _currentCard.Definition;  // ���������� �����������
+            questionText.text = _currentCard.Definition; 
 
             var shuffledCards = new List<CardModel>(_cards);
-            shuffledCards.Shuffle();  // ������������ ��������
+            shuffledCards.Shuffle();  
 
             shuffledCards.Remove(_currentCard);
-            shuffledCards.Insert(Random.Range(0, 4), _currentCard);  // ��������� ������� �������� � ��������� �����
+            shuffledCards.Insert(Random.Range(0, 4), _currentCard);
 
             for (int i = 0; i < answerButtons.Length; i++)
             {
-                answerTexts[i].text = shuffledCards[i].Term;  // ���������� ������� � shuffledCards
+                answerTexts[i].text = shuffledCards[i].Term;  
                 answerButtons[i].interactable = true;
             }
+            animator.SetState(CookieAnimator.State.Hello);
+            progress.text = $"{_currentIndex + 1} / {_cards.Count}";
+            progressBar.fillAmount = (float)_currentIndex + 1 / _cards.Count;
+            _currentIndex++;
         }
         private void OnAnswerSelected(Button button)
         {
-            int index = System.Array.IndexOf(answerButtons, button);
-
-            if (answerTexts[index].text == _currentCard.Term)
-            {
-                Debug.Log("Correct!");
-                _vibrationService.Vibrate(true);
-                progress.OnCorrectAnswer();  // ����������� ����� ��������
-            }
-            else
-            {
-                _vibrationService.Vibrate(false);
-                Debug.Log("Wrong!");
-            }
-            
-            _currentIndex++;
-            ShowNextQuestion();
+            confirmButton.image.color = confrimButtonColorActive;
+            UnSelectSelectedButton();
+            selectedButtonIndex = System.Array.IndexOf(answerButtons, button);
+            button.image.color = selectedColor;
         }
 
+        private void ConfirmSelection()
+        {
+            if (selectedButtonIndex < 0)
+                return;
+            bool isCorrectAnswer = answerTexts[selectedButtonIndex].text == _currentCard.Term;
+            _vibrationService.Vibrate(isCorrectAnswer);
+            correctAnswers += isCorrectAnswer ? 1 : 0;
+            ShowResultMenu(isCorrectAnswer, _currentCard.Term);
+            UnSelectSelectedButton();
+            selectedButtonIndex = NOTSELECTEDBUTTONINDEX;
+            confirmButton.image.color = confrimButtonColorDisabled  ;
+        }
+        private Button GetSelectedButton()
+        {
+            if (selectedButtonIndex < answerButtons.Count() && selectedButtonIndex >= 0)
+                return answerButtons[selectedButtonIndex];
+            else
+                return null;
+        }
+        private void UnSelectSelectedButton()
+        {
+            Button btn = GetSelectedButton();
+            if(btn!=null)
+                btn.image.color = unselectedColor;
+        }
+
+        private void ShowResultMenu(bool isCorrectAnswer,string term)
+        {
+            animator.SetState(isCorrectAnswer ? CookieAnimator.State.Happy : CookieAnimator.State.Sad);
+            _incorrectPopup.Show(isCorrectAnswer, term);
+        }
+        private void FinishTest()
+        {
+            TestResultText.text = $"Test completed! Good Job! \n {correctAnswers} correct answers ";    
+            TestResultText.gameObject.SetActive(true);
+            foreach (var btn in answerButtons)
+            {
+                btn.gameObject.SetActive(false);
+            }
+        }
         private void Close()
         {
             gameObject.SetActive(false);

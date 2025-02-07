@@ -46,7 +46,7 @@ public class CardsScroller : MonoBehaviour
         // Убираем все старые карточки перед добавлением новых
         foreach (var child in _childComponents)
         {
-            Destroy(child.gameObject);
+            //Destroy(child.gameObject);
         }
 
         // Создаем и инициализируем карточки
