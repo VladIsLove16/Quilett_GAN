@@ -65,7 +65,7 @@ namespace CodeBase.UI
             }
             _currentCard = _availableCards[_currentQuestionIndex];
             progress.text = $"{_currentQuestionIndex + 1} / {_availableCards.Count}";
-            progressBar.fillAmount = (float)_currentQuestionIndex + 1 / _availableCards.Count;
+            progressBar.fillAmount = (float)(_currentQuestionIndex + 1) / _availableCards.Count;
             definitionText.text = _currentCard.Definition;  // Показываем определение
             answerInput.text = "";
             _currentQuestionIndex++;

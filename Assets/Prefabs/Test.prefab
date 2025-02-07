@@ -211,8 +211,15 @@ MonoBehaviour:
   - {fileID: 7629929022296774076}
   - {fileID: 8992973101185060646}
   - {fileID: 2229098162829683945}
+  Outlines:
+  - {fileID: 57234525532186059}
+  - {fileID: 4501901815399390904}
+  - {fileID: 3122813956774102050}
+  - {fileID: 5292955672631060461}
   closeButton: {fileID: 919144950974060076}
   confirmButton: {fileID: 6731383294538423868}
+  confrimButtonColorDisabled: {r: 0.08566215, g: 0.37996152, b: 0.7264151, a: 0.25}
+  confrimButtonColorActive: {r: 0.08788714, g: 0.38983065, b: 0.745283, a: 1}
   _incorrectPopup: {fileID: 8366957914273077453}
   animator: {fileID: 8627832561722631631}
   progress: {fileID: 374534058782171976}
@@ -464,6 +471,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1773809418034902496, guid: 68a62a020f356d3438f2226b4382226b, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8418190790386594488, guid: 68a62a020f356d3438f2226b4382226b, type: 3}
       propertyPath: m_Name
       value: ConfirmButton
@@ -610,6 +621,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3390579260461562569, guid: 856ff4f5d431bf34592926878095df89, type: 3}
   m_PrefabInstance: {fileID: 2103053082680845108}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5292955672631060461 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6078681400170202329, guid: 856ff4f5d431bf34592926878095df89, type: 3}
+  m_PrefabInstance: {fileID: 2103053082680845108}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9216022797376254414 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7118616807505138426, guid: 856ff4f5d431bf34592926878095df89, type: 3}
@@ -1072,6 +1094,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 856ff4f5d431bf34592926878095df89, type: 3}
+--- !u!114 &57234525532186059 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6078681400170202329, guid: 856ff4f5d431bf34592926878095df89, type: 3}
+  m_PrefabInstance: {fileID: 6093518702468178194}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3916705320053289960 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7118616807505138426, guid: 856ff4f5d431bf34592926878095df89, type: 3}
@@ -1209,6 +1242,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4501901815399390904 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6078681400170202329, guid: 856ff4f5d431bf34592926878095df89, type: 3}
+  m_PrefabInstance: {fileID: 7647718409147931233}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &4985456750991007912 stripped
@@ -1509,6 +1553,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3122813956774102050 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6078681400170202329, guid: 856ff4f5d431bf34592926878095df89, type: 3}
+  m_PrefabInstance: {fileID: 9155156382982095099}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &5764721764673419826 stripped

@@ -1351,7 +1351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6d3c35a1ca2664d85ae3cbca6b7fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicToggle: {fileID: 0}
+  musicToggle: {fileID: 8428809164926010114}
   musicSlider: {fileID: 8879312555158030649}
   vibrationToggle: {fileID: 1867446498866911392}
   closeButton: {fileID: 6783177160058033952}

@@ -84,7 +84,7 @@ namespace CodeBase.UI
             _cardView.InitializeCard(_allCards[_currentIndex]);
 
             currentIndexText.text = $"{_currentIndex + 1} / {_allCards.Count}";
-            progressBar.fillAmount = (float)_currentIndex + 1 / _allCards.Count;
+            progressBar.fillAmount = (float)(_currentIndex + 1) / _allCards.Count;
         }
 
         // Обработчик нажатия на кнопку "Следующая"

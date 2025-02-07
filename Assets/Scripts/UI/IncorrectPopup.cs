@@ -14,6 +14,8 @@ namespace CodeBase.UI
         [SerializeField] private Sprite incorrectAnswerSprite;
         [SerializeField] private Image correctnessAnswerImage;
         [SerializeField] private Button _confirmButton;
+        [SerializeField] Color TrueColor;
+        [SerializeField] Color FalseColor;
         public Action onPopupClosed;
         private void Start()
         {
@@ -36,7 +38,7 @@ namespace CodeBase.UI
 
         private void UpdateConfrimButtonColor(bool isCorrectAnswer)
         {
-            _confirmButton.image.color = isCorrectAnswer ? Color.green : Color.red;
+            _confirmButton.image.color = isCorrectAnswer ? TrueColor : FalseColor;
         }
 
         private void Show()

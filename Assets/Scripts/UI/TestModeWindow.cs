@@ -15,10 +15,11 @@ namespace CodeBase.UI
         [SerializeField] private TextMeshProUGUI questionText;
         [SerializeField] private Button[] answerButtons;
         [SerializeField] private TextMeshProUGUI[] answerTexts;
+        [SerializeField] private Outline[] Outlines;
         [SerializeField] private Button closeButton;
         [SerializeField] private Button confirmButton;
-        Color confrimButtonColorDisabled = new Color(15, 80, 156, 0.25f);
-        Color confrimButtonColorActive = new Color(15, 80, 156, 1);
+        [SerializeField] Color confrimButtonColorDisabled = new Color(15, 80, 156, 0.25f);
+        [SerializeField] Color confrimButtonColorActive = new Color(15, 80, 156, 1);
         [SerializeField] private IncorrectPopup _incorrectPopup;
         [SerializeField] CookieAnimator animator;
         //[Inject]private CardPresenter _cardPresenter;
@@ -90,7 +91,7 @@ namespace CodeBase.UI
             }
             animator.SetState(CookieAnimator.State.Hello);
             progress.text = $"{_currentIndex + 1} / {_cards.Count}";
-            progressBar.fillAmount = (float)_currentIndex + 1 / _cards.Count;
+            progressBar.fillAmount = (float)(_currentIndex + 1) / _cards.Count;
             _currentIndex++;
         }
         private void OnAnswerSelected(Button button)
@@ -98,6 +99,7 @@ namespace CodeBase.UI
             confirmButton.image.color = confrimButtonColorActive;
             UnSelectSelectedButton();
             selectedButtonIndex = System.Array.IndexOf(answerButtons, button);
+            Outlines[selectedButtonIndex].enabled = false;
             button.image.color = selectedColor;
         }
 
@@ -123,8 +125,10 @@ namespace CodeBase.UI
         private void UnSelectSelectedButton()
         {
             Button btn = GetSelectedButton();
-            if(btn!=null)
-                btn.image.color = unselectedColor;
+            if (btn == null)
+                return;
+            Outlines[selectedButtonIndex].enabled = true;
+            btn.image.color = unselectedColor;
         }
 
         private void ShowResultMenu(bool isCorrectAnswer,string term)
