@@ -20,8 +20,8 @@ public class DataManager : MonoBehaviour
             data = CreateDefaultCardSet();
         }
         _cardManager.Load(data);
-        AndroidBridge.SaveRandomWord("english word");
-        AndroidBridge.SaveRandomWord("english word second one");
+        //AndroidBridge.SaveRandomWord("english word");
+        //AndroidBridge.SaveRandomWord("english word second one");
     }
     private void OnApplicationQuit()
     {

@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    guid: 3fc8acdd13e6c734bafef6554d6fdbcd
+  - enabled: 1
+    path: Assets/Scenes/GAN_quizlet.unity
+    guid: ed9ab272b50623e479cc2eeefca73b41
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 3b606d9445e162542a5b2200c3bfdd14, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 6ad4d0d01e7496c47954e49e657752dc, type: 2}
